@@ -46,7 +46,7 @@ typedef struct CHANNEL_HISTORY_DEQUE
 } CHANNEL_HISTORY_DEQUE;
 
 
-const int get_channel_max_history_size(CHANNEL *chan); 
+int get_channel_max_history_size(CHANNEL *chan);
 CHANNEL_HISTORY_DEQUE *init_channel_history(CHANNEL *chan, apeconfig *config);
 void free_channel_history(CHANNEL_HISTORY_DEQUE *deque);
 

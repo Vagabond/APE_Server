@@ -23,7 +23,7 @@
 #include "utils.h"
 
 
-const int get_channel_max_history_size(CHANNEL *chan) {
+int get_channel_max_history_size(CHANNEL *chan) {
     char *hs = get_property_val((chan)->properties, "max_history_size");
     return (hs != NULL) ? strtol(hs, NULL, 10) : 0;
 }
