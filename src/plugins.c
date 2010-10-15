@@ -59,6 +59,7 @@ void findandloadplugin(acetables *g_ape)
 {
 	int i;
 	char modules_path[1024];
+	ace_plugins *pcurrent;
 	
 	sprintf(modules_path, "%s*.so", CONFIG_VAL(Config, modules, g_ape->srv));
 	
@@ -69,7 +70,6 @@ void findandloadplugin(acetables *g_ape)
 
 	
 	for (i = 0; i < globbuf.gl_pathc; i++) {
-		ace_plugins *pcurrent;
 		pcurrent = loadplugin(globbuf.gl_pathv[i]);
 		
 		if (pcurrent != NULL) {
@@ -95,11 +95,14 @@ void findandloadplugin(acetables *g_ape)
 			pcurrent->next = plist;
 			g_ape->plugins = pcurrent;
 			
-			/* Calling init module */		
-			pcurrent->loader(g_ape);
-
 		}
 		
+	}
+
+	/* now init all the plugins now they're all loaded */
+	for(pcurrent = g_ape->plugins; pcurrent; pcurrent = pcurrent->next) {
+		/* Calling init module */
+		pcurrent->loader(g_ape);
 	}
 	globfree(&globbuf);
 
