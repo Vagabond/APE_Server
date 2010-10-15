@@ -20,21 +20,29 @@ modules: $(MODULES)
 
 ifdef DARWIN_BUILD
 
+ifdef ZMQ_DIR
+	ZMQ_FLAGS = -I$(ZMQ_DIR)/include
+endif
+
 lib/libmod_spidermonkey.so: libape-spidermonkey.c
 	$(CC) -Wall -g -bundle -undefined suppress -flat_namespace -o lib/libmod_spidermonkey.so libape-spidermonkey.c -I../deps/js/src/dist/include/ -L../deps/js/src/ -ljs_static -lstdc++ $(MYSQL_FLAGS)
 
 lib/libmod_zeromq.so: libape-zeromq.c
-	$(CC) -Wall -g -bundle -undefined suppress -flat_namespace -o lib/libmod_zeromq.so libape-zeromq.c -lzmq
+	$(CC) -Wall -g -bundle -undefined suppress -flat_namespace -o lib/libmod_zeromq.so libape-zeromq.c -lzmq $(ZMQ_FLAGS)
 
 endif
 ifdef LINUX_BUILD
 
 CFLAGS = -Wall -O2 -shared -fPIC -rdynamic
 
+ifdef ZMQ_DIR
+	ZMQ_FLAGS = -Wl,-rpath=$(ZMQ_DIR)/lib -I$(ZMQ_DIR)/include -L$(ZMQ_DIR)/lib
+endif
+
 lib/libmod_spidermonkey.so: libape-spidermonkey.c
 	$(CC) $(CFLAGS) -Wl,-soname,libmod_spidermonkey.so -o lib/libmod_spidermonkey.so libape-spidermonkey.c -I../deps/js/src/dist/include/ -L../deps/js/src/ -ljs_static -lstdc++ $(MYSQL_FLAGS)
 
 lib/libmod_zeromq.so: libape-zeromq.c
-	$(CC) $(CFLAGS) -Wl,-soname,libmod_zeromq.so -o lib/libmod_zeromq.so libape-zeromq.c -lzmq
-	
+	$(CC) $(CFLAGS) -Wl,-soname,libmod_zeromq.so -o lib/libmod_zeromq.so libape-zeromq.c -L/usr/local/lib -lzmq $(ZMQ_FLAGS)
+
 endif

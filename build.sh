@@ -27,8 +27,11 @@ else
 	echo "#undef _USE_MYSQL" >> ./src/configure.h
 fi
 
-if [ -e "/usr/include/zmq.h" ] || [ -e "/usr/local/include/zmq.h" ]; then
+if [ -e "/usr/include/zmq.h" ] || [ -e "${ZMQ_DIR}/include/zmq.h" ]; then
 	echo "HAS_ZMQ = 1" > ./modules/zmq.mk
+	if [ "x${ZMQ_DIR}" != "x" ]; then
+		echo "ZMQ_DIR = ${ZMQ_DIR}" >> ./modules/zmq.mk
+	fi
 else
 	echo "HAS_ZMQ = 0" > ./modules/zmq.mk
 fi
