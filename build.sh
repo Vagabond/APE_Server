@@ -27,6 +27,12 @@ else
 	echo "#undef _USE_MYSQL" >> ./src/configure.h
 fi
 
+if [ -e "/usr/include/zmq.h" ] || [ -e "/usr/local/include/zmq.h" ]; then
+	echo "HAS_ZMQ = 1" > ./modules/zmq.mk
+else
+	echo "HAS_ZMQ = 0" > ./modules/zmq.mk
+fi
+
 cd ./deps/udns-0.0.9/
 make clean && ./configure && make
 cd ../js/src/
