@@ -121,8 +121,10 @@ CHANNEL_HISTORY_DEQUE *init_channel_history(CHANNEL *chan, apeconfig *config) {
 
 /* preconditions: memory for raw has been allocated and will not be freed later elsewhere, maxsize>0 */
 void push_raw_to_channel_history(CHANNEL *chan, RAW *raw, apeconfig *config) {
-	if (chan == NULL || chan->history == NULL) return;
-	
+	if (chan == NULL || chan->history == NULL) {
+            return;
+        }
+
 	if (chan->history->filter != NULL) {
 		char *type = strstr(raw->data, "\"raw\":\"");
 

@@ -122,14 +122,9 @@ void post_raw(RAW *raw, USERS *user, acetables *g_ape)
 {
 	subuser *sub = user->subuser;
 
-	if (sub != NULL) {
-		post_raw_sub(raw, sub, g_ape);
-		sub = sub->next;
-
-		while (sub != NULL) {
-			post_raw_sub(copy_raw_z(raw), sub, g_ape);
-			sub = sub->next;
-		}
+        while (sub != NULL) {
+            post_raw_sub(copy_raw_z(raw), sub, g_ape);
+            sub = sub->next;
 	}
 }
 
@@ -141,10 +136,6 @@ void post_raw_restricted(RAW *raw, USERS *user, subuser *sub, acetables *g_ape)
 	if (sub == NULL) {
 		return;
 	}
-	if (sub != tSub) {
-		post_raw_sub(raw, tSub, g_ape);
-	}
-	tSub = tSub->next;
 
 	while (tSub != NULL) {
 		if (sub != tSub) {
