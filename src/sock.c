@@ -438,6 +438,11 @@ unsigned int sockroutine(acetables *g_ape)
 									
 									/* realloc the buffer for the next read (x2) */
 									if (g_ape->co[active_fd]->buffer_in.length == g_ape->co[active_fd]->buffer_in.size) {
+                                                                            if ( g_ape->co[active_fd]->buffer_in.size > MAX_IO ) {
+                                                                                g_ape->co[active_fd]->buffer_in.length = 0;
+                                                                                break;
+                                                                            }
+        
 										g_ape->co[active_fd]->buffer_in.size *= 2;
 
 										g_ape->co[active_fd]->buffer_in.data = xrealloc(g_ape->co[active_fd]->buffer_in.data, 
@@ -448,13 +453,13 @@ unsigned int sockroutine(acetables *g_ape)
 										unsigned int eol, *len = &g_ape->co[active_fd]->buffer_in.length;
 										char *pBuf = g_ape->co[active_fd]->buffer_in.data;
 
-										while ((eol = sneof(pBuf, *len, 4096)) != -1) {
+										while ((eol = sneof(pBuf, *len, MAX_IO)) != -1) {
 											pBuf[eol-1] = '\0';
 											g_ape->co[active_fd]->callbacks.on_read_lf(g_ape->co[active_fd], pBuf, g_ape);
 											pBuf = &pBuf[eol];
 											*len -= eol;
 										}
-										if (*len > 4096 || !*len) {
+										if (*len > MAX_IO || !*len) {
 											g_ape->co[active_fd]->buffer_in.length = 0;
 										} else if (*len && pBuf != g_ape->co[active_fd]->buffer_in.data) {
 											

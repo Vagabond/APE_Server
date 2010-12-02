@@ -34,7 +34,7 @@
 
 #include "hash.h"
 
-#define MAX_IO 4096
+#define MAX_IO 1048576
 #define DEFAULT_BUFFER_SIZE 2048
 
 #define MAX_NICK_LEN 	16 // move to module
