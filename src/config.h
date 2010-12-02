@@ -47,5 +47,10 @@ void ape_config_free(apeconfig *conf);
 #define CONFIG_VAL(section, key, srv) \
 	(ape_config_get_key(ape_config_get_section(srv, #section), #key) == NULL ? "" : ape_config_get_key(ape_config_get_section(srv, #section), #key))
 
+#define ITERATE_CONFIG_VAL(val, delims, yield) { \
+char *token = strtok((val), (delims)); while (token != NULL) { (yield); token = strtok(NULL, delims); } \
+}
+
+
 #endif
 
