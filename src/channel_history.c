@@ -145,6 +145,9 @@ void push_raw_to_channel_history(CHANNEL *chan, RAW *raw, apeconfig *config) {
 }
 
 void post_channel_history(CHANNEL *chan, USERS *user, acetables *g_ape) {
+	if (get_property_val((user)->properties, "no_history")) { /* user doesn't want history */
+		return;
+	}
 	if (get_channel_max_history_size(chan) > 0) {
 		CHANNEL_HISTORY_NODE *node = chan->history->head;
 
